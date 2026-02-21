@@ -50,7 +50,12 @@ async def call_wittgpt(user_input: str, context: str) -> str:
     try:
         response = gemini.models.generate_content(
             model="gemini-2.0-flash",
-            config=types.GenerateContentConfig(system_instruction=system_instruction, temperature=0.9),
+            config=types.GenerateContentConfig(
+                system_instruction=system_instruction, 
+                temperature=0.9,
+                # WittGPT Protocol: Enabling live Google Search grounding
+                tools=[{"google_search": {}}]
+            ),
             contents=[f"CONTEXT:\n{context}\n\nUSER QUERY: {user_input}"]
         )
         return response.text.strip()
